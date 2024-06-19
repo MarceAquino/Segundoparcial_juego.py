@@ -1,10 +1,10 @@
 #------------------------------------------------------------------------------
-def cargar_peliculas_csv(path: str) -> list[dict]:
+def cargar_preguntas_csv(path: str) -> list[dict]:
     """
-    Carga los datos de las películas desde un archivo CSV y los devuelve como una lista de diccionarios.
+    Carga los datos de las preguntas desde un archivo CSV y los devuelve como una lista de diccionarios.
 
     parametro path: La ruta del archivo CSV a cargar.
-    return: Una lista de diccionarios con la información de las películas.
+    return: Una lista de diccionarios con la información de las preguntas y respuestas.
     """
     lista_preguntas = []
     
