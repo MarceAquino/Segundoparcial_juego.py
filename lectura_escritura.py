@@ -37,6 +37,6 @@ def cargar_preguntas_csv(path: str) -> list[dict]:
             
     return lista_preguntas
 
-lista_preguntas = cargar_peliculas_csv("Segundoparcial_juego.py\Preguntas.csv")
+lista_preguntas = cargar_preguntas_csv("Segundoparcial_juego.py\Preguntas.csv")
 
 print(lista_preguntas)
