@@ -1,4 +1,3 @@
-#------------------------------------------------------------------------------
 def cargar_preguntas_csv(path: str) -> list[dict]:
     """
     Carga los datos de las preguntas desde un archivo CSV y los devuelve como una lista de diccionarios.
@@ -8,14 +7,11 @@ def cargar_preguntas_csv(path: str) -> list[dict]:
     """
     lista_preguntas = []
     
-
-    with open(path,"r",encoding='utf-8') as archivo:
+    with open(path, "r", encoding='utf-8') as archivo:
         lineas = archivo.readlines()
 
         for linea in lineas[1:]:  
             datos = linea.split(",")
-           
-
             pregunta = datos[0]
             opcion_a = datos[1]
             opcion_b = datos[2]
@@ -23,7 +19,6 @@ def cargar_preguntas_csv(path: str) -> list[dict]:
             opcion_d = datos[4]
             opcion_correcta = datos[5]
             
-
             cuestionario = {
                 "pregunta": pregunta,
                 "opcion_a": opcion_a,
@@ -36,7 +31,3 @@ def cargar_preguntas_csv(path: str) -> list[dict]:
             lista_preguntas.append(cuestionario)
             
     return lista_preguntas
-
-lista_preguntas = cargar_preguntas_csv("Segundoparcial_juego.py\Preguntas.csv")
-
-print(lista_preguntas)
