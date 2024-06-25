@@ -54,3 +54,8 @@ def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
             "D": opcion_d
         }
     }
+    
+def reiniciar_tiempo(tiempo_actual, ultimo_tiempo):
+    tiempo_inicial = tiempo_actual  # Reiniciar el tiempo
+    tiempo_restante = ultimo_tiempo
+    return tiempo_inicial, tiempo_restante    

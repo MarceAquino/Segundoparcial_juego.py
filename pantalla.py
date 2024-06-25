@@ -73,21 +73,15 @@ mostrar_botones = True
 bandera_jugar = False
 tiempo_inicializado = False
 
-def reiniciar_tiempo():
-    global tiempo_inicial, tiempo_restante
-    tiempo_inicial = pygame.time.get_ticks()  # Reiniciar el tiempo
-    tiempo_restante = ultimo_tiempo
-
-while bandera:  # bucle infinito para que se repita la pantalla
+while bandera == True:  # bucle infinito para que se repita la pantalla
     ventana.fill(colores.NEGRO)  # relleno de un color la pantalla
     lista_eventos = pygame.event.get()
     for evento in lista_eventos:
-        print(evento)
         if evento.type == pygame.QUIT:  # pregunto si se presionó la X de la ventana
             bandera = False
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             raton_x, raton_y = evento.pos
-            if jugar:
+            if jugar == True:
                 # Verificar si el clic fue dentro de las coordenadas de los botones de opciones
                 if precionar_boton(BOTON_AX, BOTON_AY, "A", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"]):
                     indice_pregunta += 1
@@ -119,13 +113,13 @@ while bandera:  # bucle infinito para que se repita la pantalla
                     
     ventana.blit(fondo_cortina_izquierda, (x_ventana_izquierda, 0))
     ventana.blit(fondo_cortina_derecha, (x_ventana_derecha, 0))
-    if mostrar_botones:
+    if mostrar_botones == True:
         ventana.blit(fondo_botones, (10, 460))
-    if jugar:
+    if jugar == True:
         if x_ventana_izquierda > -600:
             x_ventana_izquierda -= VELOCIDAD
             x_ventana_derecha += VELOCIDAD
-        elif not tiempo_inicializado:
+        elif tiempo_inicializado == False:
             tiempo_inicial = pygame.time.get_ticks()  # Inicializar el tiempo cuando las cortinas se han movido completamente
             tiempo_inicializado = True
 
@@ -150,7 +144,7 @@ while bandera:  # bucle infinito para que se repita la pantalla
         tiempo_restante_str = str(tiempo_restante).zfill(2)
         temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
 
-        if jugar:
+        if jugar == True:
            ventana.blit(pregunta_actual["pregunta"], (280, 60))
            ventana.blit(pregunta_actual["opcion_a"], (365, 215))
            ventana.blit(pregunta_actual["opcion_b"], (365, 268))
