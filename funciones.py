@@ -9,8 +9,9 @@ def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
         sonido_click.set_volume(0.35)
         sonido_click.play()
 
-        if boton in ["JUGAR", "RANKING", "CONTINUAR", "RETIRARSE", "REGRESAR"]:
+        if boton in ["JUGAR", "RANKING", "CONTINUAR", "RETIRARSE", "REINICIAR"]:
             mensaje = boton
+        
         else:
             # Verificar si la opción seleccionada es correcta
             if opciones[boton] == opcion_correcta:
@@ -58,7 +59,7 @@ def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
         }
     }
     
-def reiniciar_tiempo(tiempo_inicial, ultimo_tiempo):
+def reiniciar_tiempo(ultimo_tiempo):
     
     tiempo_inicial_actualizado = pygame.time.get_ticks()  # Reiniciar el tiempo
     tiempo_restante_actualizado = ultimo_tiempo
