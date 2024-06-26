@@ -1,26 +1,28 @@
 import pygame
 import colores
-def precionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, raton_x: int, raton_y: int, opcion_correcta: str, opciones: dict) -> bool:
-    mensaje = False
+
+def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, raton_x: int, raton_y: int, opcion_correcta: str, opciones: dict) -> str:
+    mensaje = ""
     if coordenadas_x[0] <= raton_x <= coordenadas_x[1] and coordenadas_y[0] <= raton_y <= coordenadas_y[1]:
-        sonido_click = pygame.mixer.Sound(r"sonido\click.wav")
+        
+        sonido_click = pygame.mixer.Sound(r"sonido/click.wav")
         sonido_click.set_volume(0.35)
         sonido_click.play()
-        if boton == "JUGAR":
-           mensaje = True
+
+        if boton in ["JUGAR", "RANKING", "CONTINUAR", "RETIRARSE", "REGRESAR"]:
+            mensaje = boton
         else:
             # Verificar si la opción seleccionada es correcta
             if opciones[boton] == opcion_correcta:
-                sonido_win = pygame.mixer.Sound(r"sonido\win.mp3")
+                sonido_win = pygame.mixer.Sound(r"sonido/win.mp3")
                 sonido_win.set_volume(0.35)
                 sonido_win.play()
-                mensaje = True
+                mensaje = "CORRECTA"
             else:
-                sonido_loser = pygame.mixer.Sound(r"sonido\loser.mp3")
+                sonido_loser = pygame.mixer.Sound(r"sonido/loser.mp3")
                 sonido_loser.set_volume(0.35)
                 sonido_loser.play()
-                mensaje = ""
-                
+                mensaje = "INCORRECTA"
     return mensaje
 
 def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
@@ -61,3 +63,4 @@ def reiniciar_tiempo(tiempo_inicial, ultimo_tiempo):
     tiempo_inicial_actualizado = pygame.time.get_ticks()  # Reiniciar el tiempo
     tiempo_restante_actualizado = ultimo_tiempo
     return tiempo_inicial_actualizado, tiempo_restante_actualizado   
+
