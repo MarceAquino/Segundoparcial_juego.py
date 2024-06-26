@@ -7,7 +7,7 @@ def precionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
         sonido_click.set_volume(0.35)
         sonido_click.play()
         if boton == "JUGAR":
-           mensaje =True
+           mensaje = True
         else:
             # Verificar si la opción seleccionada es correcta
             if opciones[boton] == opcion_correcta:
@@ -19,6 +19,7 @@ def precionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
                 sonido_loser = pygame.mixer.Sound(r"sonido\loser.mp3")
                 sonido_loser.set_volume(0.35)
                 sonido_loser.play()
+                mensaje = ""
                 
     return mensaje
 
@@ -55,7 +56,8 @@ def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
         }
     }
     
-def reiniciar_tiempo(tiempo_actual, ultimo_tiempo):
-    tiempo_inicial = tiempo_actual  # Reiniciar el tiempo
-    tiempo_restante = ultimo_tiempo
-    return tiempo_inicial, tiempo_restante    
+def reiniciar_tiempo(tiempo_inicial, ultimo_tiempo):
+    
+    tiempo_inicial_actualizado = pygame.time.get_ticks()  # Reiniciar el tiempo
+    tiempo_restante_actualizado = ultimo_tiempo
+    return tiempo_inicial_actualizado, tiempo_restante_actualizado   

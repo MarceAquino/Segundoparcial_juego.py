@@ -20,12 +20,7 @@ fuente_reloj = pygame.font.SysFont('arialblack', 60)
 # Constantes
 FPS = 30
 VELOCIDAD = 3
-
-# Inicializar el tiempo y el reloj
-ultimo_tiempo = 30  
-tiempo_inicial = 0
-tiempo_restante = ultimo_tiempo
-tiempo = pygame.time.Clock()
+ULTIMO_TIEMPO = 30
 
 # Fondo
 # Cargar y escalar la imagen de fondo
@@ -58,6 +53,10 @@ BOTON_CX = (620, 825)
 BOTON_CY = (205, 235)
 BOTON_DX = (620, 825)
 BOTON_DY = (260, 530)
+BOTON_CONTINUARX = (1050,1170)
+BOTON_CONTINUARY = (620,740)
+BOTON_RETIRO = (1050,1170)
+BOTON_RETIRO = (430,550)
 
 # Variables
 lista_preguntas = cargar_preguntas_csv("Preguntas.csv")
@@ -73,28 +72,35 @@ mostrar_botones = True
 bandera_jugar = False
 tiempo_inicializado = False
 
+
+# Inicializar el tiempo y el reloj
+tiempo_inicial, tiempo_restante = reiniciar_tiempo(0, ULTIMO_TIEMPO)
+tiempo = pygame.time.Clock()
+
 while bandera == True:  # bucle infinito para que se repita la pantalla
     ventana.fill(colores.NEGRO)  # relleno de un color la pantalla
     lista_eventos = pygame.event.get()
     for evento in lista_eventos:
+        print(evento)
         if evento.type == pygame.QUIT:  # pregunto si se presionó la X de la ventana
             bandera = False
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             raton_x, raton_y = evento.pos
+            
             if jugar == True:
                 # Verificar si el clic fue dentro de las coordenadas de los botones de opciones
                 if precionar_boton(BOTON_AX, BOTON_AY, "A", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"]):
                     indice_pregunta += 1
-                    reiniciar_tiempo()
+                    tiempo_inicial, tiempo_restante = reiniciar_tiempo(tiempo_inicial, ULTIMO_TIEMPO)
                 elif precionar_boton(BOTON_BX, BOTON_BY, "B", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"]):
                     indice_pregunta += 1
-                    reiniciar_tiempo()
+                    tiempo_inicial, tiempo_restante = reiniciar_tiempo(tiempo_inicial, ULTIMO_TIEMPO)
                 elif precionar_boton(BOTON_CX, BOTON_CY, "C", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"]):
                     indice_pregunta += 1
-                    reiniciar_tiempo()
+                    tiempo_inicial, tiempo_restante = reiniciar_tiempo(tiempo_inicial, ULTIMO_TIEMPO)
                 elif precionar_boton(BOTON_DX, BOTON_DY, "D", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"]):
                     indice_pregunta += 1
-                    reiniciar_tiempo()
+                    tiempo_inicial, tiempo_restante = reiniciar_tiempo(tiempo_inicial, ULTIMO_TIEMPO)
                 
                 # Cargar la siguiente pregunta si hay más preguntas
                 if indice_pregunta < len(lista_preguntas):
@@ -105,11 +111,9 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
             else:
                 # Verificar si el clic fue dentro de las coordenadas del botón de jugar
                 if precionar_boton(BOTON_PLAY_X, BOTON_PLAY_Y, "JUGAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"]):
-                    sonido_win = pygame.mixer.Sound(r"sonido\apertura.mp3")
-                    sonido_win.set_volume(0.35)
-                    sonido_win.play(loops=-1)
+                    pygame.mixer.Sound(r"sonido\apertura.mp3").play(loops=-1)
                     jugar = True
-                    tiempo_inicial = pygame.time.get_ticks()
+                    tiempo_inicial, tiempo_restante = reiniciar_tiempo(tiempo_inicial, ULTIMO_TIEMPO)
                     
     ventana.blit(fondo_cortina_izquierda, (x_ventana_izquierda, 0))
     ventana.blit(fondo_cortina_derecha, (x_ventana_derecha, 0))
@@ -125,11 +129,12 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
 
     if x_ventana_derecha >= ANCHO:
         # Limpiar la pantalla y dibujar el fondo
+       
         ventana.blit(fondo_preguntas, (0, 0))
         # Calcular el tiempo transcurrido y restante
         tiempo_actual = pygame.time.get_ticks()
         tiempo_transcurrido = tiempo_actual - tiempo_inicial
-        tiempo_restante = ultimo_tiempo - int(tiempo_transcurrido / 1000)
+        tiempo_restante = ULTIMO_TIEMPO - int(tiempo_transcurrido / 1000)
         if tiempo_restante < 0:
             tiempo_restante = 0 
         if tiempo_restante > 20:
@@ -143,8 +148,13 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
             color = colores.ROJO
         tiempo_restante_str = str(tiempo_restante).zfill(2)
         temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
+            
+           
+         
+        # ventana.blit((imagenes_preguntas[indice_pregunta]),(0,0))    
+            
 
-        if jugar == True:
+        if jugar == True :
            ventana.blit(pregunta_actual["pregunta"], (280, 60))
            ventana.blit(pregunta_actual["opcion_a"], (365, 215))
            ventana.blit(pregunta_actual["opcion_b"], (365, 268))
@@ -153,6 +163,3 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
         ventana.blit(temporizador, (237, 637))
 
     pygame.display.update()  # actualiza la pantalla
-    tiempo.tick(FPS)
-
-pygame.quit()  # terminar el proceso de pygame
