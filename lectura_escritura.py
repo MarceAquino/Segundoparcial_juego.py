@@ -1,3 +1,8 @@
+import json
+import pygame
+import constantes
+
+
 def cargar_preguntas_csv(path: str) -> list[dict]:
     """
     Carga los datos de las preguntas desde un archivo CSV y los devuelve como una lista de diccionarios.
@@ -31,3 +36,21 @@ def cargar_preguntas_csv(path: str) -> list[dict]:
             lista_preguntas.append(cuestionario)
             
     return lista_preguntas
+
+import json
+
+def cargar_datos_desde_json(path):
+    with open(path, 'r') as archivo:
+        data = json.load(archivo)
+
+    lista_imagenes = data['path']
+    lista_premios = data['premios']
+    lista_ranking = data['ranking']
+    lista_sonido = data["sonidos"]
+
+    return lista_imagenes, lista_premios, lista_ranking, lista_sonido
+lista_imagenes, lista_premios, lista_ranking, lista_sonido = cargar_datos_desde_json("path_premios.json")
+
+
+
+

@@ -1,11 +1,14 @@
 import pygame
 import colores
+from lectura_escritura import *
+
+lista_preguntas = cargar_preguntas_csv("Preguntas.csv")
 
 def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, raton_x: int, raton_y: int, opcion_correcta: str, opciones: dict) -> str:
     mensaje = ""
     if coordenadas_x[0] <= raton_x <= coordenadas_x[1] and coordenadas_y[0] <= raton_y <= coordenadas_y[1]:
         
-        sonido_click = pygame.mixer.Sound(r"sonido/click.wav")
+        sonido_click = pygame.mixer.Sound(lista_sonido[1])
         sonido_click.set_volume(0.35)
         sonido_click.play()
 
@@ -15,17 +18,19 @@ def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
         else:
             # Verificar si la opción seleccionada es correcta
             if opciones[boton] == opcion_correcta:
-                sonido_win = pygame.mixer.Sound(r"sonido/win.mp3")
+                sonido_win = pygame.mixer.Sound(lista_sonido[4])
                 sonido_win.set_volume(0.35)
                 sonido_win.play()
                 mensaje = "CORRECTA"
             else:
-                sonido_loser = pygame.mixer.Sound(r"sonido/loser.mp3")
+                sonido_loser = pygame.mixer.Sound(lista_sonido[2])
                 sonido_loser.set_volume(0.35)
                 sonido_loser.play()
                 mensaje = "INCORRECTA"
     return mensaje
 
+
+    
 def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
     preguntas = lista_preguntas[indice]
     pregunta = preguntas.get("pregunta")
@@ -64,4 +69,29 @@ def reiniciar_tiempo(ultimo_tiempo):
     tiempo_inicial_actualizado = pygame.time.get_ticks()  # Reiniciar el tiempo
     tiempo_restante_actualizado = ultimo_tiempo
     return tiempo_inicial_actualizado, tiempo_restante_actualizado   
+
+def calcular_temporizador(tiempo_inicial, ultimo_tiempo):
+    tiempo_actual = pygame.time.get_ticks()
+    tiempo_transcurrido = tiempo_actual - tiempo_inicial
+    tiempo_restante = ultimo_tiempo - int(tiempo_transcurrido / 1000)
+    
+    if tiempo_restante < 0:
+        tiempo_restante = 0 
+    
+    if tiempo_restante > 20:
+        color = colores.NEGRO
+    elif tiempo_restante > 10:
+        color = colores.NARANJA
+    elif tiempo_restante > 0:
+        color = colores.ROJO
+    else:
+        tiempo_restante = 0  
+        color = colores.ROJO
+    
+    tiempo_restante_str = str(tiempo_restante).zfill(2)
+    return tiempo_restante_str, color
+
+def dibujar_temporizador(ventana, fuente_reloj, tiempo_restante_str, color):
+    temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
+    ventana.blit(temporizador, (237, 637))
 
