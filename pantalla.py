@@ -11,6 +11,7 @@ ventana = pygame.display.set_mode(constantes.DIMENCIONES)
 pygame.display.set_caption("¿Quién quiere ser millonario?")
 fuente_reloj = pygame.font.SysFont('arialblack', 60)
 
+
 # Cargar pregunta
 imagenes_preguntas = []
 for i in range(1, 17):
@@ -43,6 +44,7 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
     lista_eventos = pygame.event.get()
     
     for evento in lista_eventos:
+        print(evento)
         if evento.type == pygame.QUIT:  # pregunto si se presionó la X de la ventana
             bandera = False
         
@@ -65,6 +67,8 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
                     resultado = presionar_boton(coordenadas_x, coordenadas_y, opcion, raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                     
                     if resultado == "CORRECTA":
+                        premio = lista_premios[indice_pregunta]
+                        print(premio)
                         indice_pregunta += 1
                         tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
                         alguna_correcta = True
@@ -92,14 +96,15 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
         ventana.blit(fondo_botones, (10, 460))
     
     if jugar == "JUGAR" or ranking == "RANKING":
+        
         if x_ventana_izquierda > -600:
             x_ventana_izquierda -= constantes.VELOCIDAD
             x_ventana_derecha += constantes.VELOCIDAD
         elif tiempo_inicializado == False:
             tiempo_inicial = pygame.time.get_ticks()  # Inicializar el tiempo cuando las cortinas se han movido completamente
             tiempo_inicializado = True
-
-    if x_ventana_derecha >= constantes.ANCHO and (jugar == "JUGAR" or ranking == "RANKING" or not ranking):
+            
+    if x_ventana_derecha >= constantes.ANCHO :
         if ranking == "RANKING":
             mostrar_botones = False
             game_over = True
@@ -118,10 +123,7 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
                         indice_pregunta = 0
                         pregunta_actual = obtener_preguntas_opciones(lista_preguntas, indice_pregunta)
                         tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
-            
-            
-        
-        
+                        
         elif jugar == "JUGAR":
             if resultado_opcion == "incorrecta" or tiempo_restante == 0:
                 mostrar_botones = False
@@ -167,13 +169,27 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
                     ventana.blit((imagenes_preguntas[indice_pregunta]),(0,0))  
                     continuar = presionar_boton(constantes.BOTON_CONTINUARX, constantes.BOTON_CONTINUARY, "CONTINUAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                     retirarse = presionar_boton(constantes.BOTON_RETIROX, constantes.BOTON_RETIROY, "RETIRARSE", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
-                    
                     if continuar == "CONTINUAR":
                         resultado_opcion = "correcta"
                         tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)   
-                    
                     elif retirarse == "RETIRARSE":
-                        resultado_opcion = "retirarse"
+                        resultado_opcion = "retirarse"  
+                    elif indice_pregunta == 15:  
+                        reiniciar = presionar_boton(constantes.REINICIO_FINX, constantes.REINICIO_FINY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
+                        if reiniciar == "REINICIAR" :
+                            jugar = False
+                            mostrar_botones = True
+                            x_ventana_izquierda = 0
+                            x_ventana_derecha = constantes.ANCHO // 2
+                            tiempo_inicializado = False
+                            game_over = False
+                            resultado_opcion = "correcta"
+                            retirarse = False
+                            indice_pregunta = 0
+                            pregunta_actual = obtener_preguntas_opciones(lista_preguntas, indice_pregunta)
+                            tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
+                               
+                           
                 
                 else:
                     ventana.blit(fondo_preguntas, (0, 0))
@@ -188,18 +204,10 @@ while bandera == True:  # bucle infinito para que se repita la pantalla
                     tiempo_transcurrido = tiempo_actual - tiempo_inicial
                     tiempo_restante = constantes.ULTIMO_TIEMPO - int(tiempo_transcurrido / 1000)
                     
-                    if tiempo_restante < 0:
-                        tiempo_restante = 0 
-                    
-                    if tiempo_restante > 20:
-                        color = colores.NEGRO
-                    elif tiempo_restante > 10:
-                        color = colores.NARANJA
-                    elif tiempo_restante > 0:
-                        color = colores.ROJO
-                    else:
-                        tiempo_restante = 0  
-                        color = colores.ROJO
+                    get_color = lambda tiempo_restante: colores.NEGRO if tiempo_restante > 20 else (colores.NARANJA if tiempo_restante > 10 else colores.ROJO)
+
+                    tiempo_restante = max(tiempo_restante, 0)
+                    color = get_color(tiempo_restante)
                     
                     tiempo_restante_str = str(tiempo_restante).zfill(2)
                     temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
