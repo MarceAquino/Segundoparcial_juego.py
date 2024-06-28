@@ -29,7 +29,22 @@ def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
                 mensaje = "INCORRECTA"
     return mensaje
 
-
+def reiniciar_juego():
+    jugar = False
+    mostrar_botones = True
+    x_ventana_izquierda = 0
+    x_ventana_derecha = constantes.ANCHO // 2
+    tiempo_inicializado = False
+    game_over = False
+    resultado_opcion = "correcta"
+    retirarse = False
+    indice_pregunta = 0
+    pregunta_actual = obtener_preguntas_opciones(lista_preguntas, indice_pregunta)
+    tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
+    
+    return (jugar, mostrar_botones, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
+            game_over, resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
+            tiempo_inicial, tiempo_restante)
     
 def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
     preguntas = lista_preguntas[indice]
@@ -70,28 +85,5 @@ def reiniciar_tiempo(ultimo_tiempo):
     tiempo_restante_actualizado = ultimo_tiempo
     return tiempo_inicial_actualizado, tiempo_restante_actualizado   
 
-def calcular_temporizador(tiempo_inicial, ultimo_tiempo):
-    tiempo_actual = pygame.time.get_ticks()
-    tiempo_transcurrido = tiempo_actual - tiempo_inicial
-    tiempo_restante = ultimo_tiempo - int(tiempo_transcurrido / 1000)
-    
-    if tiempo_restante < 0:
-        tiempo_restante = 0 
-    
-    if tiempo_restante > 20:
-        color = colores.NEGRO
-    elif tiempo_restante > 10:
-        color = colores.NARANJA
-    elif tiempo_restante > 0:
-        color = colores.ROJO
-    else:
-        tiempo_restante = 0  
-        color = colores.ROJO
-    
-    tiempo_restante_str = str(tiempo_restante).zfill(2)
-    return tiempo_restante_str, color
 
-def dibujar_temporizador(ventana, fuente_reloj, tiempo_restante_str, color):
-    temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
-    ventana.blit(temporizador, (237, 637))
 
