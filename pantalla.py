@@ -36,6 +36,7 @@ tiempo_inicializado = False
 resultado_opcion = False
 retirarse = False
 
+
 # Inicializar el tiempo y el reloj
 tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
 tiempo = pygame.time.Clock()
@@ -49,7 +50,7 @@ while bandera:
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             raton_x, raton_y = evento.pos
             
-            if jugar == "JUGAR" and retirarse != "RETIRARSE":
+            if jugar == "JUGAR" and retirarse != "RETIRARSE"  :
                
                 
                 opciones = ["A", "B", "C", "D"]
@@ -157,6 +158,7 @@ while bandera:
                         tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)   
                     elif retirarse == "RETIRARSE":
                         resultado_opcion = "retirarse"  
+                        
                     elif indice_pregunta == 15:  
                         reinicio = presionar_boton(constantes.REINICIO_FINX, constantes.REINICIO_FINY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                         if reinicio == "REINICIAR":
@@ -165,23 +167,22 @@ while bandera:
                             tiempo_inicial, tiempo_restante) = reiniciar_juego()
                 
                 else:
-                    if indice_pregunta < 15:
-                        ventana.blit(fondo_preguntas, (0, 0))
-                        ventana.blit(pregunta_actual["pregunta"], (280, 60))
-                        ventana.blit(pregunta_actual["opcion_a"], (365, 210))
-                        ventana.blit(pregunta_actual["opcion_b"], (365, 265))
-                        ventana.blit(pregunta_actual["opcion_c"], (665, 210))
-                        ventana.blit(pregunta_actual["opcion_d"], (665, 265))
-                        
-                        # Calcular el tiempo transcurrido y restante
-                        tiempo_actual = pygame.time.get_ticks()
-                        tiempo_transcurrido = tiempo_actual - tiempo_inicial
-                        tiempo_restante = constantes.ULTIMO_TIEMPO - int(tiempo_transcurrido / 1000)
-                        get_color = lambda tiempo_restante: colores.NEGRO if tiempo_restante > 20 else (colores.NARANJA if tiempo_restante > 10 else colores.ROJO)
-                        tiempo_restante = max(tiempo_restante, 0)
-                        color = get_color(tiempo_restante)
-                        tiempo_restante_str = str(tiempo_restante).zfill(2)
-                        temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
-                        ventana.blit(temporizador, (237, 637))
+                    ventana.blit(fondo_preguntas, (0, 0))
+                    ventana.blit(pregunta_actual["pregunta"], (280, 60))
+                    ventana.blit(pregunta_actual["opcion_a"], (365, 210))
+                    ventana.blit(pregunta_actual["opcion_b"], (365, 265))
+                    ventana.blit(pregunta_actual["opcion_c"], (665, 210))
+                    ventana.blit(pregunta_actual["opcion_d"], (665, 265))
+                    
+                    # Calcular el tiempo transcurrido y restante
+                    tiempo_actual = pygame.time.get_ticks()
+                    tiempo_transcurrido = tiempo_actual - tiempo_inicial
+                    tiempo_restante = constantes.ULTIMO_TIEMPO - int(tiempo_transcurrido / 1000)
+                    get_color = lambda tiempo_restante: colores.NEGRO if tiempo_restante > 20 else (colores.NARANJA if tiempo_restante > 10 else colores.ROJO)
+                    tiempo_restante = max(tiempo_restante, 0)
+                    color = get_color(tiempo_restante)
+                    tiempo_restante_str = str(tiempo_restante).zfill(2)
+                    temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
+                    ventana.blit(temporizador, (237, 637))
     
     pygame.display.update()  # Actualizar la pantalla

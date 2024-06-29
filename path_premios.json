@@ -16,13 +16,13 @@
         "imagenes\\14.png",
         "imagenes\\15.png",
         "imagenes\\16.png",
-        "imagenes\\17.png",
-        "imagenes\\18.png",
-        "imagenes\\19.png",
-        "imagenes\\20.png",
-        "imagenes\\21.png",
-        "imagenes\\22.png",
-        "imagenes\\23.png"
+        "imagenes\\botones.png",
+        "imagenes\\cortina.png",
+        "imagenes\\game_over.png",
+        "imagenes\\icon.png",
+        "imagenes\\preguntas.png",
+        "imagenes\\ranking.png",
+        "imagenes\\retiro.png"
     ],
     "premios": [
         100,
