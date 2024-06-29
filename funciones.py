@@ -88,3 +88,16 @@ def reiniciar_tiempo(ultimo_tiempo):
 
 
 
+def guardar_jugador_premio(numero_jugador,premio,lista_ranking) -> list:
+    
+    premio = int(premio)
+    jugador = {"jugador":numero_jugador,
+                "premio":premio
+                }
+    if jugador not in lista_ranking:
+        lista_ranking.append(jugador)
+        
+    return lista_ranking
+
+
+

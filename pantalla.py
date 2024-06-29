@@ -5,15 +5,15 @@ from imagenes import *
 from funciones import *
 from lectura_escritura import *
 import constantes
+import json
 
 pygame.init()
 ventana = pygame.display.set_mode(constantes.DIMENSIONES)
 pygame.display.set_caption("¿Quién quiere ser millonario?")
 fuente_reloj = pygame.font.SysFont('arialblack', 60)
-
 # Cargar imágenes de preguntas
 imagenes_preguntas = cargar_imagenes(lista_imagenes)
-print(imagenes_preguntas)
+
 
 # Cargar preguntas desde un archivo CSV
 lista_preguntas = cargar_preguntas_csv("Preguntas.csv")
@@ -24,6 +24,7 @@ x_ventana_izquierda = 0
 x_ventana_derecha = constantes.ANCHO // 2
 
 # Inicialización de banderas y variables de juego
+lista_ranking = []
 bandera = True
 jugar = False
 ranking = False
@@ -33,16 +34,16 @@ bandera_jugar = False
 tiempo_inicializado = False
 resultado_opcion = False
 retirarse = False
-
+id_jugador = 1
 
 # Inicializar el tiempo y el reloj
 tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
 tiempo = pygame.time.Clock()
 
 while bandera:
+    
     lista_eventos = pygame.event.get()
     for evento in lista_eventos:
-        print(evento)
         if evento.type == pygame.QUIT:
             bandera = False
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
@@ -116,6 +117,7 @@ while bandera:
                 tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
                 
         elif jugar == "JUGAR":
+            
             if resultado_opcion == "incorrecta":
                 mostrar_botones_cortina = False
                 ventana.blit(fondo_game_over, (0, 0))
@@ -138,12 +140,15 @@ while bandera:
                 mostrar_botones_cortina = False
                 ventana.blit(fondo_retiro, (0, 0))
                 reinicio = presionar_boton(constantes.BOTON_REINICIARX, constantes.BOTON_REINICIARY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
-                fuente = pygame.font.SysFont("arial", 20)
-                pygame.draw.rect(ventana, colores.ROJO, (80, 50, 350, 100)) 
-                texto_premio = fuente.render(f"Usted se retiró con: ${premio}", True, colores.BLANCO)
-                ventana.blit(texto_premio, (100, 75))
-                
+                fuente = pygame.font.SysFont("arial", 24)
+                pygame.draw.rect(ventana, colores.FONDO, (80, 50, 350, 100)) 
+                texto_jugador = fuente.render(f"Usted es el jugador numero: {id_jugador} ", True, colores.BLANCO)
+                texto_premio = fuente.render(f"Se retiró con un premio de: ${premio} ", True, colores.BLANCO)
+                ventana.blit(texto_jugador,(100,60))
+                ventana.blit(texto_premio, (100, 80))
                 if reinicio == "REINICIAR":
+                    print(guardar_jugador_premio(id_jugador,premio,lista_ranking))
+                    id_jugador += 1  
                     (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
                      resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
                     tiempo_inicial, tiempo_restante) = reiniciar_juego()
@@ -160,12 +165,14 @@ while bandera:
                         tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)   
                     elif retirarse == "RETIRARSE":
                         resultado_opcion = "retirarse"  
-                        
                     elif indice_pregunta == 15:  
                         mostrar_botones_opciones = False
                         ventana.blit(fondo_ganador, (0,0))
                         reinicio = presionar_boton(constantes.BOTON_REINICIARX, constantes.BOTON_REINICIARY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                         if reinicio == "REINICIAR":
+                            print(guardar_jugador_premio(id_jugador,premio,lista_ranking))
+                           
+                            id_jugador += 1 
                             (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
                              resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
                             tiempo_inicial, tiempo_restante) = reiniciar_juego()
