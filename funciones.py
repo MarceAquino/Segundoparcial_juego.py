@@ -4,6 +4,7 @@ from lectura_escritura import *
 
 lista_preguntas = cargar_preguntas_csv("Preguntas.csv")
 
+
 def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, raton_x: int, raton_y: int, opcion_correcta: str, opciones: dict) -> str:
     mensaje = ""
     if coordenadas_x[0] <= raton_x <= coordenadas_x[1] and coordenadas_y[0] <= raton_y <= coordenadas_y[1]:
@@ -35,15 +36,14 @@ def reiniciar_juego():
     x_ventana_izquierda = 0
     x_ventana_derecha = constantes.ANCHO // 2
     tiempo_inicializado = False
-    game_over = False
-    resultado_opcion = "correcta"
+    resultado_opcion = False
     retirarse = False
     indice_pregunta = 0
     pregunta_actual = obtener_preguntas_opciones(lista_preguntas, indice_pregunta)
     tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
     
     return (jugar, mostrar_botones, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-            game_over, resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
+             resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
             tiempo_inicial, tiempo_restante)
     
 def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):

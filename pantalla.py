@@ -33,7 +33,7 @@ ranking = False
 mostrar_botones = True
 bandera_jugar = False
 tiempo_inicializado = False
-resultado_opcion = "correcta"
+resultado_opcion = False
 retirarse = False
 
 # Inicializar el tiempo y el reloj
@@ -41,16 +41,17 @@ tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
 tiempo = pygame.time.Clock()
 
 while bandera:
-    lista_eventos = pygame.event.get()
     
+    lista_eventos = pygame.event.get()
     for evento in lista_eventos:
         if evento.type == pygame.QUIT:
             bandera = False
-        
         elif evento.type == pygame.MOUSEBUTTONDOWN and evento.button == 1:
             raton_x, raton_y = evento.pos
             
-            if jugar == "JUGAR" and not retirarse:
+            if jugar == "JUGAR" and retirarse != "RETIRARSE":
+               
+                
                 opciones = ["A", "B", "C", "D"]
                 coordenadas_botones = {
                     "A": (constantes.BOTON_AX, constantes.BOTON_AY),
@@ -59,8 +60,6 @@ while bandera:
                     "D": (constantes.BOTON_DX, constantes.BOTON_DY)
                 }
                 
-                
-                
                 for opcion in opciones:
                     coordenadas_x, coordenadas_y = coordenadas_botones[opcion]
                     resultado = presionar_boton(coordenadas_x, coordenadas_y, opcion, raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
@@ -68,9 +67,9 @@ while bandera:
                     if resultado == "CORRECTA":
                         premio = lista_premios[indice_pregunta]
                         premio = str(premio)
-                        indice_pregunta += 1
                         tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
                         resultado_opcion = "siguiente"
+                        indice_pregunta += 1
                         break
                     elif resultado == "INCORRECTA":
                         resultado_opcion = "incorrecta"
@@ -81,8 +80,10 @@ while bandera:
             else:
                 if mostrar_botones:
                     jugar = presionar_boton(constantes.BOTON_PLAY_X, constantes.BOTON_PLAY_Y, "JUGAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
+                    
                     ranking = presionar_boton(constantes.BOTON_RANKINX, constantes.BOTON_RANKINY, "RANKING", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                     tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
+    
     
     ventana.fill(colores.NEGRO)
     
@@ -109,32 +110,41 @@ while bandera:
             if reinicio == "REINICIAR":
                 ranking = False
                 (jugar, mostrar_botones, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-                game_over, resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
+                 resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
                 tiempo_inicial, tiempo_restante) = reiniciar_juego()
                 tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
                 
         elif jugar == "JUGAR":
-            if resultado_opcion == "incorrecta" or tiempo_restante == 0:
+            if resultado_opcion == "incorrecta":
                 mostrar_botones = False
                 ventana.blit(fondo_game_over, (0, 0))
                 reinicio = presionar_boton(constantes.BOTON_REINICIARX, constantes.BOTON_REINICIARY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                 if reinicio == "REINICIAR":
                     (jugar, mostrar_botones, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-                    game_over, resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
+                     resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
                     tiempo_inicial, tiempo_restante) = reiniciar_juego()
+                    
+            elif tiempo_restante == 0:       
+                mostrar_botones = False
+                ventana.blit(fondo_game_over, (0, 0))
+                reinicio = presionar_boton(constantes.BOTON_REINICIARX, constantes.BOTON_REINICIARY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
+                if reinicio == "REINICIAR":
+                    (jugar, mostrar_botones, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
+                     resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
+                    tiempo_inicial, tiempo_restante) = reiniciar_juego()    
                                 
             elif resultado_opcion == "retirarse":
                 mostrar_botones = False
                 ventana.blit(fondo_retiro, (0, 0))
                 reinicio = presionar_boton(constantes.BOTON_REINICIARX, constantes.BOTON_REINICIARY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                 fuente = pygame.font.SysFont("arial", 20)
-                pygame.draw.rect(ventana, colores.FONDO, (80, 50, 350, 100)) 
+                pygame.draw.rect(ventana, colores.ROJO, (80, 50, 350, 100)) 
                 texto_premio = fuente.render(f"Usted se retiró con: ${premio}", True, colores.BLANCO)
                 ventana.blit(texto_premio, (100, 75))
                 
                 if reinicio == "REINICIAR":
                     (jugar, mostrar_botones, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-                    game_over, resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
+                     resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
                     tiempo_inicial, tiempo_restante) = reiniciar_juego()
             
             else:
@@ -143,7 +153,7 @@ while bandera:
                     continuar = presionar_boton(constantes.BOTON_CONTINUARX, constantes.BOTON_CONTINUARY, "CONTINUAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                     retirarse = presionar_boton(constantes.BOTON_RETIROX, constantes.BOTON_RETIROY, "RETIRARSE", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                     if continuar == "CONTINUAR":
-                        resultado_opcion = "correcta"
+                        resultado_opcion = False
                         tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)   
                     elif retirarse == "RETIRARSE":
                         resultado_opcion = "retirarse"  
@@ -151,26 +161,27 @@ while bandera:
                         reinicio = presionar_boton(constantes.REINICIO_FINX, constantes.REINICIO_FINY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                         if reinicio == "REINICIAR":
                             (jugar, mostrar_botones, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-                            game_over, resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
+                             resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
                             tiempo_inicial, tiempo_restante) = reiniciar_juego()
                 
                 else:
-                    ventana.blit(fondo_preguntas, (0, 0))
-                    ventana.blit(pregunta_actual["pregunta"], (280, 60))
-                    ventana.blit(pregunta_actual["opcion_a"], (365, 210))
-                    ventana.blit(pregunta_actual["opcion_b"], (365, 265))
-                    ventana.blit(pregunta_actual["opcion_c"], (665, 210))
-                    ventana.blit(pregunta_actual["opcion_d"], (665, 265))
-                    
-                    # Calcular el tiempo transcurrido y restante
-                    tiempo_actual = pygame.time.get_ticks()
-                    tiempo_transcurrido = tiempo_actual - tiempo_inicial
-                    tiempo_restante = constantes.ULTIMO_TIEMPO - int(tiempo_transcurrido / 1000)
-                    get_color = lambda tiempo_restante: colores.NEGRO if tiempo_restante > 20 else (colores.NARANJA if tiempo_restante > 10 else colores.ROJO)
-                    tiempo_restante = max(tiempo_restante, 0)
-                    color = get_color(tiempo_restante)
-                    tiempo_restante_str = str(tiempo_restante).zfill(2)
-                    temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
-                    ventana.blit(temporizador, (237, 637))
+                    if indice_pregunta < 15:
+                        ventana.blit(fondo_preguntas, (0, 0))
+                        ventana.blit(pregunta_actual["pregunta"], (280, 60))
+                        ventana.blit(pregunta_actual["opcion_a"], (365, 210))
+                        ventana.blit(pregunta_actual["opcion_b"], (365, 265))
+                        ventana.blit(pregunta_actual["opcion_c"], (665, 210))
+                        ventana.blit(pregunta_actual["opcion_d"], (665, 265))
+                        
+                        # Calcular el tiempo transcurrido y restante
+                        tiempo_actual = pygame.time.get_ticks()
+                        tiempo_transcurrido = tiempo_actual - tiempo_inicial
+                        tiempo_restante = constantes.ULTIMO_TIEMPO - int(tiempo_transcurrido / 1000)
+                        get_color = lambda tiempo_restante: colores.NEGRO if tiempo_restante > 20 else (colores.NARANJA if tiempo_restante > 10 else colores.ROJO)
+                        tiempo_restante = max(tiempo_restante, 0)
+                        color = get_color(tiempo_restante)
+                        tiempo_restante_str = str(tiempo_restante).zfill(2)
+                        temporizador = fuente_reloj.render(tiempo_restante_str, True, color)
+                        ventana.blit(temporizador, (237, 637))
     
     pygame.display.update()  # Actualizar la pantalla
