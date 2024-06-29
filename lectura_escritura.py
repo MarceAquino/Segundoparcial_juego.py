@@ -107,6 +107,20 @@ def guardar_premio_csv(lista_ranking: list[dict], path: str):
 
             archivo.write(f"{jugador},{premio}\n")   
                
+def bubble_sort(lista_ranking: list[dict], clave: str) -> None:
+  
+    
+    for i in range(len(lista_ranking)):
+        intercambio = False
+        for j in range(len(lista_ranking) - 1 - i):
+            if lista_ranking[j][clave] > lista_ranking[j + 1][clave]:
+                auxiliar = lista_ranking[j]
+                lista_ranking[j] = lista_ranking[j + 1]
+                lista_ranking[j + 1] = auxiliar
+                intercambio = True
+           
+        if intercambio != True:
+            break
 
 
 

@@ -5,7 +5,7 @@ from imagenes import *
 from funciones import *
 from lectura_escritura import *
 import constantes
-import json
+
 
 pygame.init()
 ventana = pygame.display.set_mode(constantes.DIMENSIONES)
