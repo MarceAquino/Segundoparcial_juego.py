@@ -49,7 +49,64 @@ def cargar_datos_desde_json(path):
     return lista_imagenes, lista_premios,  lista_sonido
 lista_imagenes, lista_premios,  lista_sonido = cargar_datos_desde_json("path_premios.json")
 
+def cargar_premios_csv(path: str) -> list[dict]:
+ 
+    lista_ranking = []
+    
+    with open(path, "r", encoding='utf-8') as archivo:
+        lineas = archivo.readlines()
+        for linea in lineas[1:]:
+            if linea.strip():  # Check if the line is not empty
+                datos = linea.strip().split(",")
+                if len(datos) == 2:
+                    jugador = int(datos[0])
+                    premio = int(datos[1].replace("\n", ""))
+                    
+                    ranking = {
+                        "ID": jugador,
+                        "premio": premio
+                    }
+                    lista_ranking.append(ranking)
+               
+    
+    return lista_ranking
 
+def obtener_maximo (lista_ranking: list, clave: str) -> int | float | bool:
+    
+    base = None
+    bandera = True
+    mensaje = False
+    for ranking in lista_ranking:
+        dato = ranking.get(clave)
+        if bandera == True or dato > base:
+            base = dato
+            mensaje = base
+            bandera = False
+       
+    return mensaje
+
+def guardar_premio (lista_ranking: list[dict],premio) -> dict:
+    
+    jugador = obtener_maximo (lista_ranking, "ID") + 1
+    jugador = {
+        "ID": jugador,
+        "premio": premio,    
+     }
+    lista_ranking.append(jugador)
+    
+def guardar_premio_csv(lista_ranking: list[dict], path: str):
+  
+    with open(path,"w",encoding='utf-8') as archivo:
+        archivo.write("ID,premio\n")
+
+        for i in range(len(lista_ranking)):
+            ranking = lista_ranking[i]
+            jugador = ranking["ID"]
+            premio = ranking["premio"]
+         
+
+            archivo.write(f"{jugador},{premio}\n")   
+               
 
 
 
