@@ -14,15 +14,14 @@
         "imagenes\\12.png",
         "imagenes\\13.png",
         "imagenes\\14.png",
-        "imagenes\\15.png",
-        "imagenes\\16.png",
+        "imagenes\\retiro.png",
         "imagenes\\botones.png",
         "imagenes\\cortina.png",
         "imagenes\\game_over.png",
         "imagenes\\icon.png",
         "imagenes\\preguntas.png",
         "imagenes\\ranking.png",
-        "imagenes\\retiro.png"
+        "imagenes\\retiro_premio.png"
     ],
     "premios": [
         100,

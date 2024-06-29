@@ -7,7 +7,7 @@ from lectura_escritura import *
 import constantes
 
 pygame.init()
-ventana = pygame.display.set_mode(constantes.DIMENCIONES)
+ventana = pygame.display.set_mode(constantes.DIMENSIONES)
 pygame.display.set_caption("¿Quién quiere ser millonario?")
 fuente_reloj = pygame.font.SysFont('arialblack', 60)
 
@@ -16,7 +16,7 @@ imagenes_preguntas = []
 for i in range(1, 17):
     imagen_path = f"imagenes/{i}.png"
     imagen = pygame.image.load(imagen_path)
-    imagen = pygame.transform.scale(imagen, constantes.DIMENCIONES)
+    imagen = pygame.transform.scale(imagen, constantes.DIMENSIONES)
     imagenes_preguntas.append(imagen)
     
 lista_preguntas = cargar_preguntas_csv("Preguntas.csv")

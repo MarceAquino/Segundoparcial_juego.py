@@ -32,18 +32,19 @@ def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
 
 def reiniciar_juego():
     jugar = False
-    mostrar_botones = True
+    mostrar_botones_cortina = True
     x_ventana_izquierda = 0
     x_ventana_derecha = constantes.ANCHO // 2
     tiempo_inicializado = False
     resultado_opcion = False
     retirarse = False
     indice_pregunta = 0
+    indice_imagen = -1
     pregunta_actual = obtener_preguntas_opciones(lista_preguntas, indice_pregunta)
     tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
     
-    return (jugar, mostrar_botones, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-             resultado_opcion, retirarse, indice_pregunta, pregunta_actual,
+    return (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
+             resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
             tiempo_inicial, tiempo_restante)
     
 def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
