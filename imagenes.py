@@ -19,6 +19,8 @@ fondo_retiro = pygame.image.load(lista_imagenes[14])
 fondo_retiro = pygame.transform.scale(fondo_retiro,constantes.DIMENSIONES)
 fondo_ganador = pygame.image.load(lista_imagenes[21])
 fondo_ganador = pygame.transform.scale(fondo_ganador,constantes.DIMENSIONES)
+fondo_time_over = pygame.image.load(lista_imagenes[22])
+fondo_time_over = pygame.transform.scale(fondo_time_over, constantes.DIMENSIONES)
 
 def cargar_imagenes(lista_imagenes):
     imagenes_cargadas = []  

@@ -34,7 +34,7 @@ def cargar_preguntas_csv(path: str) -> list[dict]:
             }
 
             lista_preguntas.append(cuestionario)
-            
+
     return lista_preguntas
 
 
@@ -69,7 +69,7 @@ def cargar_premios_csv(path: str) -> list[dict]:
                     lista_ranking.append(ranking)
                
     
-    return lista_ranking
+    return lista_ranking[:5]
 
 def obtener_maximo (lista_ranking: list, clave: str) -> int | float | bool:
     
@@ -90,16 +90,18 @@ def guardar_premio (lista_ranking: list[dict],premio) -> dict:
     jugador = obtener_maximo (lista_ranking, "ID") + 1
     jugador = {
         "ID": jugador,
-        "premio": premio,    
+        "premio": int(premio),    
      }
     lista_ranking.append(jugador)
+
+
     
 def guardar_premio_csv(lista_ranking: list[dict], path: str):
-  
+    
+    bubble_sort(lista_ranking,"premio")
     with open(path,"w",encoding='utf-8') as archivo:
         archivo.write("ID,premio\n")
-
-        for i in range(len(lista_ranking)):
+        for i in range(5):
             ranking = lista_ranking[i]
             jugador = ranking["ID"]
             premio = ranking["premio"]
@@ -109,11 +111,10 @@ def guardar_premio_csv(lista_ranking: list[dict], path: str):
                
 def bubble_sort(lista_ranking: list[dict], clave: str) -> None:
   
-    
     for i in range(len(lista_ranking)):
         intercambio = False
         for j in range(len(lista_ranking) - 1 - i):
-            if lista_ranking[j][clave] > lista_ranking[j + 1][clave]:
+            if lista_ranking[j][clave] < lista_ranking[j + 1][clave]:
                 auxiliar = lista_ranking[j]
                 lista_ranking[j] = lista_ranking[j + 1]
                 lista_ranking[j + 1] = auxiliar
@@ -121,6 +122,5 @@ def bubble_sort(lista_ranking: list[dict], clave: str) -> None:
            
         if intercambio != True:
             break
-
 
 

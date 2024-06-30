@@ -21,7 +21,8 @@
         "imagenes\\icon.png",
         "imagenes\\preguntas.png",
         "imagenes\\ranking.png",
-        "imagenes\\retiro_premio.png"
+        "imagenes\\retiro_premio.png",
+        "imagenes\\tiempo_fuera.png"
     ],
     "premios": [
         100,
@@ -40,7 +41,6 @@
         500000,
         1000000
     ],
-
     "sonidos": [
         "sonido\\1.mp3",
         "sonido\\2.wav",

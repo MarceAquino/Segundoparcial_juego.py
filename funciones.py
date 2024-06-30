@@ -88,6 +88,56 @@ def reiniciar_tiempo(ultimo_tiempo):
 
 
 
+def centrar_texto(texto, ancho) -> str:
+    """
+    Centra un texto dentro de un ancho determinado agregando
+    espacios a ambos lados.
+    
+    Argumentos:
+    - texto: El texto que se va a centrar.
+    - ancho: El ancho total deseado para el texto centrado.
+    
+    Retorna:
+    - str: El texto centrado dentro del ancho especificado.
+    """
+    espacios = ancho - len(texto)
+    izquierda = espacios // 2
+    derecha = espacios - izquierda
+    return ' ' * izquierda + texto + ' ' * derecha
+def mostrar_lista_jugadores(ventana, lista, area):
+    """
+    Muestra una lista de jugadores en la pantalla del juego.
+    
+    Argumentos:
+    - ventana: La ventana de Pygame donde se mostrará la lista.
+    - lista: Una lista de diccionarios que contiene los datos de los jugadores.
+    - area: Tupla con coordenadas (x, y, ancho, alto) del área donde se mostrará la lista.
+    """
+    if not lista:
+        return None
+    
+    fuente = pygame.font.SysFont('arial', 20)
+    x_inicial, y_inicial, ancho_area, alto_area = area
+    espacio_vertical = (alto_area + 50 - y_inicial) // len(lista)
+    
+    matriz_jugadores = [[""] * 2 for _ in range(len(lista))]
+    indice = 0
+    
+    for i in range(len(matriz_jugadores)):
+        for j in range(len(matriz_jugadores[i])):
+            if indice < len(lista):
+                jugador = lista[indice]
+                if j == 0:
+                    texto = f"Jugador Nº{jugador['ID']}"
+                else:
+                    texto = f"${jugador['premio']}"
+                matriz_jugadores[i][j] = centrar_texto(texto, 20)
+                if j == 1:  # Solo incrementar el índice después de agregar ambas columnas
+                    indice += 1
+    for i, fila in enumerate(matriz_jugadores):
+        for j, texto in enumerate(fila):
+            if texto.strip():
+                texto_superficie = fuente.render(texto, True, colores.BLANCO)
+                ventana.blit(texto_superficie, (x_inicial + j * 800, y_inicial + i * espacio_vertical))
 
-
-
+    return True

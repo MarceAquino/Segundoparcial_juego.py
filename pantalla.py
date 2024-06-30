@@ -24,11 +24,12 @@ indice_imagen = -1
 pregunta_actual = obtener_preguntas_opciones(lista_preguntas, indice_pregunta)
 x_ventana_izquierda = 0
 x_ventana_derecha = constantes.ANCHO // 2
+area_lista_jugadores = (165, 226, 225, 655)
 
 # Inicialización de banderas y variables de juego
 bandera = True
 jugar = False
-ranking = False
+ranking = 0
 mostrar_botones_cortina = True
 mostrar_botones_opciones = False
 bandera_jugar = False
@@ -109,11 +110,14 @@ while bandera:
         if ranking == "RANKING":
             mostrar_botones_cortina = False
             ventana.blit(fondo_ranking, (0, 0))
+            if lista_ranking:
+                lista_ranking = cargar_premios_csv("ranking.csv")
+                mostrar_lista_jugadores(ventana, lista_ranking, area_lista_jugadores)
             reinicio = presionar_boton(constantes.BOTON_REINICIARX, constantes.BOTON_REINICIARY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
             if reinicio == "REINICIAR":
                 ranking = False
                 (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-                 resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
+                resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
                 tiempo_inicial, tiempo_restante) = reiniciar_juego()
                 tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
                 
@@ -130,7 +134,7 @@ while bandera:
                     
             elif tiempo_restante == 0:       
                 mostrar_botones_cortina = False
-                ventana.blit(fondo_game_over, (0, 0))
+                ventana.blit(fondo_time_over, (0, 0))
                 reinicio = presionar_boton(constantes.BOTON_REINICIARX, constantes.BOTON_REINICIARY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                 if reinicio == "REINICIAR":
                     (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
@@ -148,7 +152,7 @@ while bandera:
                 #ventana.blit(texto_jugador,(100,60))
                 ventana.blit(texto_premio, (100, 80))
                 if reinicio == "REINICIAR":
-                    guardar_premio (lista_ranking,premio)
+                    guardar_premio(lista_ranking,premio)
                     guardar_premio_csv(lista_ranking,"ranking.csv") 
                     (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
                      resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
@@ -171,9 +175,8 @@ while bandera:
                         ventana.blit(fondo_ganador, (0,0))
                         reinicio = presionar_boton(constantes.BOTON_REINICIARX, constantes.BOTON_REINICIARY, "REINICIAR", raton_x, raton_y, pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                         if reinicio == "REINICIAR":
-                            guardar_premio (lista_ranking,premio)
-                            guardar_premio_csv(lista_ranking,"ranking.csv")
-                            
+                            guardar_premio(lista_ranking,premio)
+                            guardar_premio_csv(lista_ranking,"ranking.csv")  
                             (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
                              resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
                             tiempo_inicial, tiempo_restante) = reiniciar_juego()
