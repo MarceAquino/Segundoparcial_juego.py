@@ -1,11 +1,28 @@
 import pygame
 import colores
+import constantes
 from lectura_escritura import *
 
+
+
 lista_preguntas = cargar_preguntas_csv("Preguntas.csv")
-
-
+#----------------------------------------------------------------------------------------------------------------------------------------------------
 def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, raton_x: int, raton_y: int, opcion_correcta: str, opciones: dict) -> str:
+    
+    """ 
+    Maneja la lógica al presionar un botón.
+
+    Argumentos:
+    - coordenadas_x: Tupla con las coordenadas X del botón.
+    - coordenadas_y: Tupla con las coordenadas Y del botón.
+    - boton: Nombre del botón.
+    - raton_x: Coordenada X del ratón.
+    - raton_y: Coordenada Y del ratón.
+    - opcion_correcta: Opción correcta de la pregunta.
+    - opciones: Diccionario de opciones de la pregunta.
+    Retorna:
+    - str: Mensaje que indica la acción realizada. """
+    
     mensaje = ""
     if coordenadas_x[0] <= raton_x <= coordenadas_x[1] and coordenadas_y[0] <= raton_y <= coordenadas_y[1]:
         
@@ -29,8 +46,25 @@ def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
                 sonido_loser.play()
                 mensaje = "INCORRECTA"
     return mensaje
+#----------------------------------------------------------------------------------------------------------------------------------------------------
+def reiniciar_juego() -> tuple:
+    """
+    Reinicia el estado del juego.
 
-def reiniciar_juego():
+    Retorna: 
+    - jugar (bool)
+    - mostrar_botones_cortina (bool)
+    - x_ventana_izquierda (int)
+    - x_ventana_derecha (int)
+    - tiempo_inicializado (bool)
+    - resultado_opcion (bool)
+    - retirarse (bool)
+    - indice_pregunta (int)
+    - indice_imagen (int)
+    - pregunta_actual (dict)
+    - tiempo_inicial (int)
+    - tiempo_restante (int) """
+    
     jugar = False
     mostrar_botones_cortina = True
     x_ventana_izquierda = 0
@@ -46,8 +80,25 @@ def reiniciar_juego():
     return (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
              resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
             tiempo_inicial, tiempo_restante)
-    
-def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
+#----------------------------------------------------------------------------------------------------------------------------------------------------    
+def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int) -> dict:
+    """
+    Obtiene la pregunta y las opciones de respuesta para una pregunta específica.
+
+    Argumentos:
+    - lista_preguntas: Lista de diccionarios con las preguntas y opciones.
+    - indice: Índice de la pregunta en la lista.
+
+    Retorna:
+    - dict: Diccionario con los renderizados de la pregunta y las opciones, que incluye:
+        - pregunta (Surface)
+        - opcion_a (Surface)
+        - opcion_b (Surface)
+        - opcion_c (Surface)
+        - opcion_d (Surface)
+        - opcion_correcta (str)
+        - opciones (dict) """
+        
     preguntas = lista_preguntas[indice]
     pregunta = preguntas.get("pregunta")
     opcion_a = preguntas.get("opcion_a")
@@ -79,42 +130,57 @@ def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int):
             "D": opcion_d
         }
     }
-    
-def reiniciar_tiempo(ultimo_tiempo):
-    
+#----------------------------------------------------------------------------------------------------------------------------------------------------      
+def reiniciar_tiempo(ultimo_tiempo: int) -> tuple:
+    """
+    Reinicia el tiempo del juego.
+
+    Argumentos:
+    - ultimo_tiempo: Tiempo total permitido.
+
+    Retorna:
+    - tuple: Tiempo inicial y tiempo restante actualizados.
+        - tiempo_inicial_actualizado (int)
+        - tiempo_restante_actualizado (int)"""
+        
     tiempo_inicial_actualizado = pygame.time.get_ticks()  # Reiniciar el tiempo
     tiempo_restante_actualizado = ultimo_tiempo
     return tiempo_inicial_actualizado, tiempo_restante_actualizado   
 
 
-
-def centrar_texto(texto, ancho) -> str:
+#---------------------------------------------------------------------------------------------------------------------------------------------------- 
+def centrar_texto(texto: str, ancho: int) -> str:
     """
-    Centra un texto dentro de un ancho determinado agregando
-    espacios a ambos lados.
-    
+    Centra un texto dentro de un ancho determinado agregando espacios a ambos lados.
+
     Argumentos:
     - texto: El texto que se va a centrar.
     - ancho: El ancho total deseado para el texto centrado.
-    
+
     Retorna:
-    - str: El texto centrado dentro del ancho especificado.
-    """
+    - str: El texto centrado dentro del ancho especificado."""
+    
     espacios = ancho - len(texto)
     izquierda = espacios // 2
     derecha = espacios - izquierda
     return ' ' * izquierda + texto + ' ' * derecha
-def mostrar_lista_jugadores(ventana, lista, area):
+#---------------------------------------------------------------------------------------------------------------------------------------------------- 
+def mostrar_lista_jugadores(ventana, lista: list[dict], area: tuple) -> bool:
+    
     """
     Muestra una lista de jugadores en la pantalla del juego.
-    
+
     Argumentos:
     - ventana: La ventana de Pygame donde se mostrará la lista.
     - lista: Una lista de diccionarios que contiene los datos de los jugadores.
     - area: Tupla con coordenadas (x, y, ancho, alto) del área donde se mostrará la lista.
-    """
-    if not lista:
-        return None
+
+    Retorna:
+    - bool: True si se muestra la lista de jugadores, False si la lista está vacía."""
+    
+    mensaje = True
+    if len(lista) == 0:
+        mensaje = None
     
     fuente = pygame.font.SysFont('arial', 20)
     x_inicial, y_inicial, ancho_area, alto_area = area
@@ -140,4 +206,5 @@ def mostrar_lista_jugadores(ventana, lista, area):
                 texto_superficie = fuente.render(texto, True, colores.BLANCO)
                 ventana.blit(texto_superficie, (x_inicial + j * 800, y_inicial + i * espacio_vertical))
 
-    return True
+    return mensaje
+#----------------------------------------------------------------------------------------------------------------------------------------------------         

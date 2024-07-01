@@ -1,7 +1,8 @@
 import pygame
 from lectura_escritura import *
 import constantes
-icono = pygame.image.load(lista_imagenes[18])  # Cargar imagen específica
+#---------------------------------------------------------------------------------------------------------------------------------------------------- 
+icono = pygame.image.load(lista_imagenes[18])  
 pygame.display.set_icon(icono)
 fondo_cortina_izquierda = pygame.image.load(lista_imagenes[16])
 fondo_cortina_izquierda = pygame.transform.scale(fondo_cortina_izquierda, (constantes.ANCHO // 2, constantes.ALTO))
@@ -21,11 +22,20 @@ fondo_ganador = pygame.image.load(lista_imagenes[21])
 fondo_ganador = pygame.transform.scale(fondo_ganador,constantes.DIMENSIONES)
 fondo_time_over = pygame.image.load(lista_imagenes[22])
 fondo_time_over = pygame.transform.scale(fondo_time_over, constantes.DIMENSIONES)
+#---------------------------------------------------------------------------------------------------------------------------------------------------- 
+def cargar_imagenes(lista_imagenes: list) -> list:
+    """
+    Carga y escala una lista de imágenes utilizando Pygame.
 
-def cargar_imagenes(lista_imagenes):
+    Argumentos:
+    - lista_imagenes: Una lista de rutas de archivos de imágenes.
+    Retorna:
+    - list: Una lista de imágenes cargadas y escaladas."""
+    
     imagenes_cargadas = []  
     for i in range(len(lista_imagenes)):
         imagen_cargada = pygame.image.load(lista_imagenes[i])
         imagen_cargada = pygame.transform.scale(imagen_cargada,constantes.DIMENSIONES)
         imagenes_cargadas.append(imagen_cargada)
     return imagenes_cargadas
+#---------------------------------------------------------------------------------------------------------------------------------------------------- 
