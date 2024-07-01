@@ -165,7 +165,7 @@ def centrar_texto(texto: str, ancho: int) -> str:
     derecha = espacios - izquierda
     return ' ' * izquierda + texto + ' ' * derecha
 #---------------------------------------------------------------------------------------------------------------------------------------------------- 
-def mostrar_lista_jugadores(ventana, lista: list[dict], area: tuple) -> bool:
+def mostrar_lista_jugadores(ventana, lista: list[dict], area: tuple) :
     
     """
     Muestra una lista de jugadores en la pantalla del juego.
@@ -173,20 +173,13 @@ def mostrar_lista_jugadores(ventana, lista: list[dict], area: tuple) -> bool:
     Argumentos:
     - ventana: La ventana de Pygame donde se mostrará la lista.
     - lista: Una lista de diccionarios que contiene los datos de los jugadores.
-    - area: Tupla con coordenadas (x, y, ancho, alto) del área donde se mostrará la lista.
-
-    Retorna:
-    - bool: True si se muestra la lista de jugadores, False si la lista está vacía."""
-    
-    mensaje = True
-    if len(lista) == 0:
-        mensaje = None
+    - area: Tupla con coordenadas (x, y, ancho, alto) del área donde se mostrará la lista. """
     
     fuente = pygame.font.SysFont('arial', 20)
     x_inicial, y_inicial, ancho_area, alto_area = area
-    espacio_vertical = (alto_area + 50 - y_inicial) // len(lista)
+    espacio_vertical = (alto_area + 50 - y_inicial) // 5
     
-    matriz_jugadores = [[""] * 2 for _ in range(len(lista))]
+    matriz_jugadores = [[""] * 2 for _ in range(5)]
     indice = 0
     
     for i in range(len(matriz_jugadores)):
@@ -206,5 +199,5 @@ def mostrar_lista_jugadores(ventana, lista: list[dict], area: tuple) -> bool:
                 texto_superficie = fuente.render(texto, True, colores.BLANCO)
                 ventana.blit(texto_superficie, (x_inicial + j * 800, y_inicial + i * espacio_vertical))
 
-    return mensaje
+   
 #----------------------------------------------------------------------------------------------------------------------------------------------------         

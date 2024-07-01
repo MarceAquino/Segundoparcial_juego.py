@@ -72,7 +72,7 @@ def cargar_premios_csv(path: str) -> list[dict]:
     with open(path, "r", encoding='utf-8') as archivo:
         lineas = archivo.readlines()
         for linea in lineas[1:]:
-            if linea.strip():  # Check if the line is not empty
+            if linea.strip():  
                 datos = linea.strip().split(",")
                 if len(datos) == 2:
                     jugador = int(datos[0])
@@ -96,15 +96,18 @@ def guardar_premio_csv(lista_ranking: list[dict], path: str) -> None:
     Retorna:
     - None """
     
+    longitud = len(lista_ranking) 
     bubble_sort(lista_ranking,"premio")
     with open(path,"w",encoding='utf-8') as archivo:
         archivo.write("ID,premio\n")
-        for i in range(5):
+    
+        for i in range(longitud):
+            if i >= 5:
+                break
             ranking = lista_ranking[i]
             jugador = ranking["ID"]
             premio = ranking["premio"]
-         
-            archivo.write(f"{jugador},{premio}\n")   
+            archivo.write(f"{jugador},{premio}\n") 
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 def obtener_maximo(lista_ranking: list[dict], clave: str) -> int | float | bool:
     """
@@ -129,24 +132,29 @@ def obtener_maximo(lista_ranking: list[dict], clave: str) -> int | float | bool:
        
     return mensaje
 #----------------------------------------------------------------------------------------------------------------------------------------------------
-def guardar_premio(lista_ranking: list[dict], premio) -> None:
+def guardar_premio(lista_ranking: list[dict], premio: int) -> None:
+    
     """
-    Guarda un nuevo premio en la lista de rankings.
+    Guarda un nuevo premio en la lista de rankings y lo almacena en un archivo CSV.
 
     Argumentos:
     - lista_ranking: La lista de diccionarios donde se guardará el nuevo premio.
     - premio: El premio a guardar.
-
+    - path: La ruta del archivo CSV donde se guardará la información.
     Retorna:
     - None """
     
-    jugador = obtener_maximo (lista_ranking, "ID") + 1
-    jugador = {
-        "ID": jugador,
-        "premio": int(premio),    
-     }
+    if len(lista_ranking) < 1:
+        jugador_id = 1
+    else:
+        jugador_id = obtener_maximo(lista_ranking, "ID") + 1
     
-    lista_ranking.append(jugador)
+    nuevo_jugador = {
+        "ID": jugador_id,
+        "premio": int(premio),
+    }
+    
+    lista_ranking.append(nuevo_jugador)
     
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 

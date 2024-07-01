@@ -24,3 +24,8 @@ BOTON_REINICIARX = (1020,1110)
 BOTON_REINICIARY = (14,80)
 RECORDX = (800,925) 
 RECORDY = (238,343)
+import pygame
+
+# Inicializar Pygame
+pygame.init()
+
