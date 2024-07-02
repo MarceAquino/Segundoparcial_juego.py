@@ -51,10 +51,11 @@
 * Selecciona la opción correcta para cada pregunta antes de que se acabe el tiempo.
 * Puedes optar por retirarte en cualquier momento y recibir el premio acumulado.
   
-![1](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/022c94d2-52c9-4e81-8a8a-27d1d4865634)
-![2](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/7f08ff2b-a8c8-40ad-af3c-6e804dddcc24)
-![3](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/0108fa3b-3609-4c56-9d40-8bcb452e5a91)
-![4](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/16a7bfaa-bebb-4574-bb15-790b50d9ad06)
+![1](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/8382573c-f70b-478c-a3e0-969a5477aa5b)
+![2](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/03d4d56f-50d4-4fc7-a207-59be6e15ea17)
+![3](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/c09b1162-70c9-4558-98e3-14fb7d81f4be)
+![4](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/5ab32f06-0d53-4544-9a6b-e13581c7d295)
+
 
 
 ##Créditos
