@@ -26,7 +26,7 @@ def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
     mensaje = ""
     if coordenadas_x[0] <= raton_x <= coordenadas_x[1] and coordenadas_y[0] <= raton_y <= coordenadas_y[1]:
         
-        sonido_click = pygame.mixer.Sound(lista_sonido[1])
+        sonido_click = pygame.mixer.Sound(lista_sonido[0])
         sonido_click.set_volume(0.35)
         sonido_click.play()
 
@@ -36,12 +36,12 @@ def presionar_boton(coordenadas_x: tuple, coordenadas_y: tuple, boton: str, rato
         else:
             # Verificar si la opción seleccionada es correcta
             if opciones[boton] == opcion_correcta:
-                sonido_win = pygame.mixer.Sound(lista_sonido[4])
+                sonido_win = pygame.mixer.Sound(lista_sonido[1])
                 sonido_win.set_volume(0.35)
                 sonido_win.play()
                 mensaje = "CORRECTA"
             else:
-                sonido_loser = pygame.mixer.Sound(lista_sonido[2])
+                sonido_loser = pygame.mixer.Sound(lista_sonido[3])
                 sonido_loser.set_volume(0.35)
                 sonido_loser.play()
                 mensaje = "INCORRECTA"
@@ -52,18 +52,25 @@ def reiniciar_juego() -> tuple:
     Reinicia el estado del juego.
 
     Retorna: 
-    - jugar (bool)
-    - mostrar_botones_cortina (bool)
-    - x_ventana_izquierda (int)
-    - x_ventana_derecha (int)
-    - tiempo_inicializado (bool)
-    - resultado_opcion (bool)
-    - retirarse (bool)
-    - indice_pregunta (int)
-    - indice_imagen (int)
-    - pregunta_actual (dict)
-    - tiempo_inicial (int)
-    - tiempo_restante (int) """
+    - jugar (bool): Indica si el juego está en curso o no.
+    - mostrar_botones_cortina (bool): Indica si se deben mostrar los botones de cortina en la interfaz.
+    - x_ventana_izquierda (int): Coordenada X inicial para la ventana izquierda.
+    - x_ventana_derecha (int): Coordenada X inicial para la ventana derecha.
+    - tiempo_inicializado (bool): Indica si el tiempo del juego ha sido inicializado.
+    - resultado_opcion (bool): Indica si se ha seleccionado una opción de respuesta.
+    - retirarse (bool): Indica si el jugador ha decidido retirarse del juego.
+    - indice_pregunta (int): Índice de la pregunta actual en la lista de preguntas.
+    - indice_imagen (int): Índice de la imagen actual.
+    - pregunta_actual (dict): Datos de la pregunta actual, obtenidos de la lista de preguntas.
+    - tiempo_inicial (int): Tiempo inicial del juego.
+    - tiempo_restante (int): Tiempo restante para responder la pregunta actual.
+    - bandera_sonido_paso (bool): Indica si se debe reproducir el sonido de paso.
+    - bandera_sonido_game_over (bool): Indica si se debe reproducir el sonido de game over.
+    - bandera_sonido_time_over (bool): Indica si se debe reproducir el sonido de tiempo agotado.
+    - bandera_sonido_cortina (bool): Indica si se debe reproducir el sonido de cortina.
+    - bandera_sonido_win (bool): Indica si se debe reproducir el sonido de victoria.
+    - bandera_sonido_pregunta (bool): Indica si se debe reproducir el sonido de pregunta.
+    """
     
     jugar = False
     mostrar_botones_cortina = True
@@ -76,10 +83,19 @@ def reiniciar_juego() -> tuple:
     indice_imagen = -1
     pregunta_actual = obtener_preguntas_opciones(lista_preguntas, indice_pregunta)
     tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)
+    bandera_sonido_paso = False
+    bandera_sonido_game_over = False
+    bandera_sonido_time_over = False
+    bandera_sonido_pregunta = True
+    bandera_sonido_win = False
+    contador = 0
     
     return (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-             resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
-            tiempo_inicial, tiempo_restante)
+             resultado_opcion, retirarse, indice_pregunta, indice_imagen, pregunta_actual,
+             tiempo_inicial, tiempo_restante, bandera_sonido_paso, bandera_sonido_game_over,
+             bandera_sonido_time_over, contador, bandera_sonido_win, bandera_sonido_pregunta)
+
+
 #----------------------------------------------------------------------------------------------------------------------------------------------------    
 def obtener_preguntas_opciones(lista_preguntas: list[dict], indice: int) -> dict:
     """

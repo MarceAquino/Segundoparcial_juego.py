@@ -42,10 +42,14 @@
         1000000
     ],
     "sonidos": [
-        "sonido\\1.mp3",
-        "sonido\\2.wav",
-        "sonido\\3.mp3",
-        "sonido\\4.mp3",
-        "sonido\\5.mp3"
+        "sonido\\click.wav",
+        "sonido\\correcto.mp3",
+        "sonido\\cortina.mp3",
+        "sonido\\error.mp3",
+        "sonido\\game_over.mp3",
+        "sonido\\paso.mp3",
+        "sonido\\pregunta.mp3",
+        "sonido\\time_over.mp3",
+        "sonido\\win.mp3"
     ]
 }

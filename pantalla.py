@@ -3,6 +3,9 @@ import colores
 from imagenes import *
 from funciones import *
 import constantes
+import sys
+import pygame.mixer
+pygame.mixer.init()
 pygame.init()
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 ventana = pygame.display.set_mode(constantes.DIMENSIONES)
@@ -30,6 +33,12 @@ tiempo_inicializado = False
 resultado_opcion = False
 retirarse = False
 guardar = False
+bandera_sonido_paso = False
+bandera_sonido_game_over = False
+bandera_sonido_time_over = False
+bandera_sonido_win = False
+bandera_sonido_pregunta = True
+contador = 0
 tiempo = pygame.time.Clock()
 #----------------------------------------------------------------------------------------------------------------------------------------------------
 while bandera == True:
@@ -60,14 +69,18 @@ while bandera == True:
                                                     pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                         
                         if resultado == "CORRECTA":
+                            sonido_pregunta.stop()
                             premio = lista_premios[indice_pregunta]
                             premio = str(premio)
                             resultado_opcion = "siguiente"
                             indice_imagen += 1
-                            indice_pregunta += 1
+                            indice_pregunta += 1   
+                            bandera_sonido_pregunta = False
                             break
                         elif resultado == "INCORRECTA":
+                            sonido_pregunta.stop()
                             resultado_opcion = "incorrecta"
+                            bandera_sonido_pregunta = False
                            
                     if indice_pregunta < len(lista_preguntas):
                         pregunta_actual = obtener_preguntas_opciones(lista_preguntas, indice_pregunta)
@@ -84,12 +97,16 @@ while bandera == True:
     ventana.fill(colores.NEGRO)
     
     if mostrar_botones_cortina == True:
+        contador += 1
+        if contador == 1:
+            sonido_cortina = pygame.mixer.Sound(lista_sonido[2])
+            sonido_cortina.set_volume(0.35)
+            sonido_cortina.play()
         ventana.blit(fondo_cortina_izquierda, (x_ventana_izquierda, 0))
         ventana.blit(fondo_cortina_derecha, (x_ventana_derecha, 0))
         ventana.blit(fondo_botones, (10, 460))
     
     if jugar == "JUGAR" or ranking == "RANKING":
-        
         if x_ventana_izquierda > -600:
             x_ventana_izquierda -= constantes.VELOCIDAD
             x_ventana_derecha += constantes.VELOCIDAD
@@ -100,6 +117,7 @@ while bandera == True:
             
         
     if x_ventana_derecha >= constantes.ANCHO:
+        sonido_cortina.stop()
         if ranking == "RANKING":
             mostrar_botones_cortina = False
             ventana.blit(fondo_ranking, (0, 0))
@@ -111,24 +129,38 @@ while bandera == True:
             if reinicio == "REINICIAR":
                 ranking = False
                 (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
-                resultado_opcion, retirarse, indice_pregunta,indice_imagen, pregunta_actual,
-                tiempo_inicial, tiempo_restante) = reiniciar_juego()
-                
+                resultado_opcion, retirarse, indice_pregunta, indice_imagen, pregunta_actual,
+                tiempo_inicial, tiempo_restante, bandera_sonido_paso, bandera_sonido_game_over,
+                bandera_sonido_time_over, contador, bandera_sonido_win, bandera_sonido_pregunta) = reiniciar_juego()
+                                
         elif jugar == "JUGAR":
-           
+    
             if resultado_opcion == "incorrecta" or tiempo_restante == 0 or resultado_opcion == "retirarse" or indice_pregunta == 15:
                 mostrar_botones_cortina = False
                 mostrar_botones_opciones = False
                 
                 if resultado_opcion == "incorrecta":
                     ventana.blit(fondo_game_over, (0, 0))
-                    
+                    if bandera_sonido_game_over == False:
+                        sonido_game_over = pygame.mixer.Sound(lista_sonido[4])
+                        sonido_game_over.set_volume(0.35)
+                        sonido_game_over.play()
+                        bandera_sonido_game_over = True
                 elif tiempo_restante == 0:
                     ventana.blit(fondo_time_over, (0, 0))
-                    
+                    if bandera_sonido_time_over == False:
+                        sonido_time_over = pygame.mixer.Sound(lista_sonido[7])
+                        sonido_time_over.set_volume(0.35)
+                        sonido_time_over.play()
+                        bandera_sonido_time_over = True
                 elif indice_pregunta == 15:
                     guardar = True
-                    ventana.blit(fondo_ganador, (0,0))    
+                    ventana.blit(fondo_ganador, (0,0))  
+                    if bandera_sonido_win == False:
+                        sonido_win = pygame.mixer.Sound(lista_sonido[8])
+                        sonido_win.set_volume(0.35)
+                        sonido_win.play()
+                        bandera_sonido_win = True  
                    
                     
                 elif resultado_opcion == "retirarse": 
@@ -148,15 +180,25 @@ while bandera == True:
                         guardar_premio(lista_ranking,premio)
                         guardar_premio_csv(lista_ranking,"ranking.csv") 
                         guardar = False
-                    
+                    if bandera_sonido_win != False:    
+                        sonido_win.stop()
+                    elif bandera_sonido_time_over != False:    
+                        sonido_time_over.stop()
+                    elif bandera_sonido_game_over != False:    
+                        sonido_game_over.stop()
+                        
+                    bandera_sonido_game_over = False
+                    bandera_sonido_time_over = False
+                    bandera_sonido_win = False
                     (jugar, mostrar_botones_cortina, x_ventana_izquierda, x_ventana_derecha, tiempo_inicializado,
                     resultado_opcion, retirarse, indice_pregunta, indice_imagen, pregunta_actual,
-                    tiempo_inicial, tiempo_restante) = reiniciar_juego() 
-                    
-                    
+                    tiempo_inicial, tiempo_restante, bandera_sonido_paso, bandera_sonido_game_over,
+                    bandera_sonido_time_over, contador, bandera_sonido_win, bandera_sonido_pregunta) = reiniciar_juego() 
+                         
             else:
-                if resultado_opcion == "siguiente":  
-                    
+                
+                if resultado_opcion == "siguiente":
+                      
                     mostrar_botones_opciones = False
                     ventana.blit(imagenes_preguntas[indice_imagen], (0, 0))  
                     continuar = presionar_boton(constantes.BOTON_CONTINUARX, constantes.BOTON_CONTINUARY, "CONTINUAR", raton_x, raton_y,
@@ -164,15 +206,30 @@ while bandera == True:
                     retirarse = presionar_boton(constantes.BOTON_RETIROX, constantes.BOTON_RETIROY, "RETIRARSE", raton_x, raton_y,
                                                 pregunta_actual["opcion_correcta"], pregunta_actual["opciones"])
                     
+                    if bandera_sonido_paso == False:
+                        sonido_paso = pygame.mixer.Sound(lista_sonido[5])
+                        sonido_paso.set_volume(0.35)
+                        sonido_paso.play()
+                        bandera_sonido_paso = True
                     if continuar == "CONTINUAR":
+                        bandera_sonido_pregunta = True
+                        sonido_paso.stop()
                         resultado_opcion = False
                         mostrar_botones_opciones = True           
                         tiempo_inicial, tiempo_restante = reiniciar_tiempo(constantes.ULTIMO_TIEMPO)   
+                        bandera_sonido_paso = False
                         
                     elif retirarse == "RETIRARSE":
+                        sonido_paso.stop()
                         resultado_opcion = "retirarse"  
                         
+                        
                 else:
+                    if bandera_sonido_pregunta == True:
+                        sonido_pregunta = pygame.mixer.Sound(lista_sonido[6])
+                        sonido_pregunta.set_volume(0.35)
+                        sonido_pregunta.play()
+                        bandera_sonido_pregunta = False
                     mostrar_botones_opciones = True
                     ventana.blit(fondo_preguntas, (0, 0))
                     ventana.blit(pregunta_actual["pregunta"], (280, 60))
@@ -191,3 +248,6 @@ while bandera == True:
                     ventana.blit(temporizador, (237, 637))
     
     pygame.display.update()  # Actualizar la pantalla
+    
+pygame.quit()
+sys.exit()
