@@ -24,7 +24,7 @@
 3. Instalar dependencias
 
     
-*git clone https://github.com/tu_usuario/tu_repositorio.git
+*git clone https://github.com/MarceAquino/Segundoparcial_juego.py
 *cd tu_repositorio
 *pip install -r requirements.txt
 *pip install pygames
