@@ -1,14 +1,14 @@
 # ¿Quien quiere ser millonario?
 
-"¿Quién quiere ser millonario?" es una implementación del popular juego de preguntas y respuestas en Python utilizando Pygame. El objetivo del juego es responder correctamente a una serie de preguntas para ganar premios virtuales.
+> "¿Quién quiere ser millonario?" es una implementación del popular juego de preguntas y respuestas en Python utilizando Pygame. El objetivo del juego es responder correctamente a una serie de preguntas para ganar premios virtuales.
 
 ### Características
 
-    -Preguntas con múltiples opciones.
-    -Sistema de premios y ranking.
-    -Temporizador para cada pregunta.
-    -Imágenes y sonidos que mejoran la experiencia del usuario.
-    -Interfaz gráfica amigable.
+- Preguntas con múltiples opciones.
+- Sistema de premios y ranking.
+- Temporizador para cada pregunta.
+- Imágenes y sonidos que mejoran la experiencia del usuario.
+- Interfaz gráfica amigable.
 
 ### requisitos:
 
@@ -22,11 +22,12 @@
 2. Navegar al directorio del proyecto
 3. Instalar dependencias
 
-```
-git clone https://github.com/MarceAquino/Segundoparcial_juego.py
-cd tu_repositorio
-pip install -r requirements.txt
-pip install pygames
+```sh
+    git clone https://github.com/MarceAquino/Segundoparcial_juego.py
+    cd tu_repositorio
+    pip install -r requirements.txt
+    pip install pygames
+
 ```
 
 #### Archivos y Directorios:
@@ -53,5 +54,6 @@ pip install pygames
 ![3](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/c09b1162-70c9-4558-98e3-14fb7d81f4be)
 ![4](https://github.com/MarceAquino/Segundoparcial_juego.py/assets/150548525/5ab32f06-0d53-4544-9a6b-e13581c7d295)
 
-##Créditos
-#####Desarrollado por Marcelo Aquino y Morena Siciliano. Proyecto del primer cuatrimestre de Programación en la Universidad de Tecnología Nacional (UTN).
+## Créditos 🤝
+
+##### Desarrollado por Marcelo Aquino y Morena Siciliano. Proyecto del primer cuatrimestre de Programación en la Universidad de Tecnología Nacional (UTN).
